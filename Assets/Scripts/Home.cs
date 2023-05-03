@@ -5,12 +5,13 @@ using UnityEngine;
 public class Home : MonoBehaviour
 {
     SpriteRenderer _spriteRenderer;
-    Collider2D _collider2D;
+    BoxCollider2D _boxCollider2D;
     // Start is called before the first frame update
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _spriteRenderer.enabled = false;
+        _boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -21,7 +22,10 @@ public class Home : MonoBehaviour
 
     public void SetOccupied(bool occupied)
     {
-        _spriteRenderer.enabled = occupied;
+        if (_spriteRenderer)
+            _spriteRenderer.enabled = occupied;
+        if (_boxCollider2D)
+            _boxCollider2D.enabled = !occupied;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -29,6 +33,7 @@ public class Home : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             SetOccupied(true);
+            FindObjectOfType<GameManager>().HomeOccupied();
         }
     }
 }
