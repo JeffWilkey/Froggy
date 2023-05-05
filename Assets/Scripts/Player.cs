@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject playerSpriteRenderer;
+    public GameObject deathSound;
     public float speed = 5f;
     public Sprite playerSprite;
     public Sprite deadSprite;
@@ -74,6 +75,8 @@ public class Player : MonoBehaviour
             return;
         }
 
+        GetComponent<AudioSource>().Play();
+
         Vector3 destination = transform.position + dir;
 
         Collider2D hazard = Physics2D.OverlapBox(transform.position + dir, Vector2.zero, 0f, LayerMask.GetMask("Hazard"));
@@ -107,6 +110,7 @@ public class Player : MonoBehaviour
         _circleCollider2d.enabled = false;
         playerSpriteRenderer.GetComponent<SpriteRenderer>().sprite = deadSprite;
         _isDead = true;
+        deathSound.GetComponent<AudioSource>().Play();
         _gameManager.Died();
     }
 
